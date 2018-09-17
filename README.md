@@ -1,4 +1,4 @@
-# ProjetoREST
+# Projeto de PA1
 
 Projeto de um backend completo utilizando padrão arquitetural REST.
 
