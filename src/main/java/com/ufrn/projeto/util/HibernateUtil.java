@@ -5,7 +5,9 @@
  */
 package com.ufrn.projeto.util;
 
+import com.ufrn.projeto.model.Matriz;
 import com.ufrn.projeto.model.Temperatura;
+import com.ufrn.projeto.model.Usuario;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -25,6 +27,8 @@ public class HibernateUtil {
             cfg.configure("hibernate.cfg.xml");
     
             cfg.addAnnotatedClass(Temperatura.class);
+            cfg.addAnnotatedClass(Matriz.class);
+            cfg.addAnnotatedClass(Usuario.class);
 
             StandardServiceRegistryBuilder registradorServico = new StandardServiceRegistryBuilder();
             registradorServico.applySettings(cfg.getProperties());

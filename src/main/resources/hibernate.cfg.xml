@@ -3,7 +3,7 @@
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/pigManager?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/pig?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password"></property>
@@ -17,6 +17,8 @@
     <property name="current_session_context_class">thread</property>
     
     <mapping class="com.ufrn.projeto.model.Temperatura"/>
+    <mapping class="com.ufrn.projeto.model.Matriz"/>
+    <mapping class="com.ufrn.projeto.model.Usuario"/>
     
   </session-factory>
 </hibernate-configuration>

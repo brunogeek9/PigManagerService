@@ -2,5 +2,6 @@
 package com.ufrn.projeto.model.enums;
 
 public enum EnumEstagio {
-    teste, lala;
+    //verificar com alguem os etagios da matriz
+    inicio, parto;
 }
