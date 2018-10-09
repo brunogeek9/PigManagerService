@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ufrn.projeto.services;
 
+import com.ufrn.projeto.dao.implementations.EstagioMatrizDaoImpl;
 import com.ufrn.projeto.dao.implementations.MatrizDaoImpl;
+import com.ufrn.projeto.dao.interfaces.IEstagioMatrizDao;
 import com.ufrn.projeto.dao.interfaces.IMatrizDao;
 import com.ufrn.projeto.exceptions.CustomNoContentException;
 import com.ufrn.projeto.exceptions.OutputMessage;
+import com.ufrn.projeto.model.Estagio;
 import com.ufrn.projeto.model.Matriz;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -35,7 +33,7 @@ public class ServiceMatriz {
     public Response create(Matriz matriz){         
         try{
             IMatrizDao matrizDAO = new MatrizDaoImpl();    	
-            matrizDAO.save(matriz);
+            matrizDAO.save(matriz);            
         }catch (Exception e){
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -43,6 +41,15 @@ public class ServiceMatriz {
                     .build();
         }
         
+        //LOG ESTAGIO   
+        try {
+            IEstagioMatrizDao estagioMatrizDao = new EstagioMatrizDaoImpl();        
+            estagioMatrizDao.save(new Estagio(matriz, matriz.getEstagio()));
+            //System.out.println("salvou" + estagioMatrizDao);
+        } catch (Exception e) {
+            System.err.println("erro: "+ e);
+        }
+            
         return Response
                 .status(Response.Status.CREATED)
                 .entity(matriz)
@@ -80,7 +87,6 @@ public class ServiceMatriz {
                 .build();
     }
     
-    
     /*
     @DELETE
     @Secured
@@ -103,9 +109,6 @@ public class ServiceMatriz {
                 .build();
     }*/
     
-    
-
-    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -120,13 +123,21 @@ public class ServiceMatriz {
                     .build();
         }
         
+        //LOG ESTAGIO  
+        try {
+            IEstagioMatrizDao estagioMatrizDao = new EstagioMatrizDaoImpl();        
+            estagioMatrizDao.save(new Estagio(matriz, matriz.getEstagio()));
+            //System.out.println("salvou" + estagioMatrizDao);
+        } catch (Exception e) {
+            System.err.println("erro: "+ e);
+        }
+        
         return Response
                 .status(Response.Status.OK)
                 .entity(matriz)
                 .build();
     }
     
-
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)

@@ -25,19 +25,21 @@ public class Matriz implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)    
+    @Column(nullable = false) 
+    @NotNull(message = "Por favor, informe o identificador da matriz!")
     private double identificador;
     
     @Column(name = "raca", nullable = false)
-    @NotEmpty(message = "Por favor, insira a raça!")
+    @NotEmpty(message = "Por favor, insira a raça da matriz!")
     private String raca;
 
-    @Column(name = "peso", nullable = false)   
+    @Column(name = "peso", nullable = false)  
+    @NotNull(message = "Por favor, informe o peso da matriz!")
     private double peso;
 
     @Column(name = "estagio", nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Por favor, informe o tipo de usuário!")
+    @NotNull(message = "Por favor, informe o tipo de estagio da matriz!")
     private EnumEstagio estagio;
     
     @Column(name = "data_nascimento", nullable = false)

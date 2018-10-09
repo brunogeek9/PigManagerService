@@ -5,18 +5,14 @@
  */
 package com.ufrn.projeto.util;
 
+import com.ufrn.projeto.model.Estagio;
 import com.ufrn.projeto.model.Matriz;
-import com.ufrn.projeto.model.Temperatura;
 import com.ufrn.projeto.model.Usuario;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
-/**
- *
- * @author Taniro
- */
 public class HibernateUtil {
 
     private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -26,9 +22,9 @@ public class HibernateUtil {
             Configuration cfg = new Configuration();
             cfg.configure("hibernate.cfg.xml");
     
-            cfg.addAnnotatedClass(Temperatura.class);
             cfg.addAnnotatedClass(Matriz.class);
-            cfg.addAnnotatedClass(Usuario.class);
+            cfg.addAnnotatedClass(Usuario.class);            
+            cfg.addAnnotatedClass(Estagio.class);
 
             StandardServiceRegistryBuilder registradorServico = new StandardServiceRegistryBuilder();
             registradorServico.applySettings(cfg.getProperties());
