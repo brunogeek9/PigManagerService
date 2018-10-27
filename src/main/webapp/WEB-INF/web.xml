@@ -8,6 +8,8 @@
             <!-- É preciso configurar o pacote onde estarão os serviços -->
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>com.ufrn.projeto.services,com.ufrn.projeto.exceptions,com.ufrn.projeto.security</param-value>
+            <!-- Configurando o CORS no projeto -->
+            
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
