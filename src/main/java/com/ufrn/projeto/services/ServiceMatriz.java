@@ -8,6 +8,7 @@ import com.ufrn.projeto.exceptions.CustomNoContentException;
 import com.ufrn.projeto.exceptions.OutputMessage;
 import com.ufrn.projeto.model.Estagio;
 import com.ufrn.projeto.model.Matriz;
+import com.ufrn.projeto.model.enums.EnumEstagio;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -35,6 +36,7 @@ public class ServiceMatriz {
             IMatrizDao matrizDAO = new MatrizDaoImpl();    	
             matrizDAO.save(matriz);            
         }catch (Exception e){
+            System.out.println("ERRR"+ e.getMessage());
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new OutputMessage(500,e.getMessage()))
@@ -65,14 +67,16 @@ public class ServiceMatriz {
         
         IMatrizDao matrizDao = new MatrizDaoImpl(); 
         Matriz obj = matrizDao.findById(id);
-
-        if (obj == null){
+        IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
+        Estagio estagio = estagioDao.findByEstagio(obj.getEstagio().toString(), obj.getId());
+        
+        if (obj == null || estagio == null){
             return Response
                     .status(Response.Status.NO_CONTENT)
                     .build();
         }
         try{
-            matrizDao.delete(obj);
+            estagioDao.delete(estagio);
         }catch (Exception e){
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
