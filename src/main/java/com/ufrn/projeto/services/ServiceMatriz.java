@@ -40,6 +40,8 @@ public class ServiceMatriz {
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new OutputMessage(500,e.getMessage()))
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
         }
         
@@ -55,6 +57,8 @@ public class ServiceMatriz {
         return Response
                 .status(Response.Status.CREATED)
                 .entity(matriz)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
     }
     
@@ -73,6 +77,8 @@ public class ServiceMatriz {
         if (obj == null || estagio == null){
             return Response
                     .status(Response.Status.NO_CONTENT)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
         }
         try{
@@ -81,12 +87,16 @@ public class ServiceMatriz {
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new OutputMessage(500,e.getMessage()))
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
         }
         
         return Response
                 .status(Response.Status.OK)
                 .entity(new OutputMessage(200,"Objeto removido."))
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 //.entity(new OutputMessage(200,"Objeto removido por "+ securityContext.getUserPrincipal().getName()))
                 .build();
     }
@@ -124,6 +134,8 @@ public class ServiceMatriz {
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new OutputMessage(500,e.getMessage()))
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
         }
         
@@ -139,6 +151,8 @@ public class ServiceMatriz {
         return Response
                 .status(Response.Status.OK)
                 .entity(matriz)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
     }
     
@@ -152,18 +166,24 @@ public class ServiceMatriz {
             if (obj == null){
                 return Response
                         .status(Response.Status.NO_CONTENT)
+                        .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                         .build();
                 
             }else{
                 return Response
                     .status(Response.Status.OK)
                     .entity(obj)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
             }
         }catch (Exception e){
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(new OutputMessage(500,e.getMessage()))
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
         }
     }
@@ -190,12 +210,16 @@ public class ServiceMatriz {
                 return Response
                     .status(Response.Status.OK)
                     .entity(obj)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
             }
         }catch (Exception e){
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(new OutputMessage(500,e.getMessage()))
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
         }        
     }
@@ -222,17 +246,23 @@ public class ServiceMatriz {
             if (obj.isEmpty()){
                 return Response
                         .status(Response.Status.NO_CONTENT)
+                        .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                         .build();
             }else{
                 return Response
                     .status(Response.Status.OK)
                     .entity(obj)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
             }
         }catch (Exception e){
             return Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(new OutputMessage(500,e.getMessage()))
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
         }        
     }   
