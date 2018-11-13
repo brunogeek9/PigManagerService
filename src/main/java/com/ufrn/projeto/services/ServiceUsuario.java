@@ -1,12 +1,12 @@
 package com.ufrn.projeto.services;
 
-import com.ufrn.projeto.dao.implementations.MatrizDaoImpl;
+import com.ufrn.projeto.dao.implementations.LoginDaoImpl;
 import com.ufrn.projeto.dao.implementations.UsuarioDaoImpl;
-import com.ufrn.projeto.dao.interfaces.IMatrizDao;
+import com.ufrn.projeto.dao.interfaces.ILoginDao;
 import com.ufrn.projeto.dao.interfaces.IUsuarioDao;
 import com.ufrn.projeto.exceptions.CustomNoContentException;
 import com.ufrn.projeto.exceptions.OutputMessage;
-import com.ufrn.projeto.model.Matriz;
+import com.ufrn.projeto.model.Login;
 import com.ufrn.projeto.model.Usuario;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -23,17 +23,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.hibernate.criterion.Order;
 
-
 @Path("/usuario")
 public class ServiceUsuario {
       
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Usuario usuario){         
+    public Response create(Login login){         
         try{
-            IUsuarioDao usuarioDao = new UsuarioDaoImpl();    	
-            usuarioDao.save(usuario);
+            ILoginDao logindao = new LoginDaoImpl();    	
+            logindao.save(login);
         }catch (Exception e){
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -47,7 +46,7 @@ public class ServiceUsuario {
                 .status(Response.Status.CREATED)
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                .entity(usuario)
+                .entity(login)
                 .build();
     }
     

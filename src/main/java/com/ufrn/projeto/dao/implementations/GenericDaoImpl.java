@@ -101,7 +101,8 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IGenericDao<T
         Transaction t = null;
         try{
             session = HibernateUtil.getSessionFactory().openSession();
-            Criteria criteria = session.createCriteria(klass); 
+            Criteria criteria = session.createCriteria(klass)
+                    .add(Restrictions.eq("ativo", true)); 
             if (order != null) { 
                 criteria.addOrder(order); 
             } 
@@ -126,8 +127,9 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IGenericDao<T
         Transaction t = null;
         try{
             session = HibernateUtil.getSessionFactory().openSession();
-             Criteria criteria = session.createCriteria(klass) 
-                        .add(Restrictions.in(property, values)); 
+            Criteria criteria = session.createCriteria(klass) 
+                       .add(Restrictions.in(property, values))
+                       .add(Restrictions.eq("ativo", true)); 
             if (order != null) { 
                     criteria.addOrder(order); 
             }

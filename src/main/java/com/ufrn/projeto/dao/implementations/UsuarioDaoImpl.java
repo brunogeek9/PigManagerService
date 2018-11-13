@@ -5,10 +5,8 @@ import com.ufrn.projeto.model.Usuario;
 
 public class UsuarioDaoImpl extends GenericDaoImpl<Usuario, Integer> implements IUsuarioDao {
 	
-	 public UsuarioDaoImpl() { 
-	        super(Usuario.class); 
-	 } 
-
-	 
-	 
+    public UsuarioDaoImpl() { 
+           super(Usuario.class); 
+    }          
+  
 }

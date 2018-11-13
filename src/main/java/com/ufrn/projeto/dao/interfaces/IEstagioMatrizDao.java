@@ -1,7 +1,11 @@
 package com.ufrn.projeto.dao.interfaces;
 
-import com.ufrn.projeto.model.Estagio;
+import com.ufrn.projeto.model.LogEstagio;
+//import com.ufrn.projeto.model.Matriz;
 
-public interface IEstagioMatrizDao extends IGenericDao<Estagio, Integer>{
-    public Estagio findByEstagio(String estagio, int id);
+public interface IEstagioMatrizDao extends IGenericDao<LogEstagio, Integer>{
+    public LogEstagio findByEstagio(String estagio, int id);
+    
+    //public LogEstagio buscarMatriz(Matriz matriz);
+    
 }

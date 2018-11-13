@@ -1,44 +1,45 @@
 package com.ufrn.projeto.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ufrn.projeto.model.enums.EnumEstagio;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Cascade;
 
 @Entity
-@Table(name = "estagio")
-public class Estagio implements Serializable{
+@Table(name = "logEstagio")
+public class LogEstagio implements Serializable{
       
     @Id
     @Column(name = "idestagio")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Matriz matriz;
     
     @Column(name = "estagio", nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Por favor, informe o tipo de estagio da matriz!")
     private EnumEstagio estagio;
+    
+//    @Column(nullable = false)
+//    private boolean ativo = true;
 
-    public Estagio() {
+    public LogEstagio() {
     }
 
-    public Estagio(Matriz matriz, EnumEstagio estagio) {
+    public LogEstagio(Matriz matriz, EnumEstagio estagio) {
         this.matriz = matriz;
         this.estagio = estagio;
     }
@@ -85,7 +86,7 @@ public class Estagio implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Estagio other = (Estagio) obj;
+        final LogEstagio other = (LogEstagio) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

@@ -58,6 +58,26 @@
         </dependency>
         <!-- Fim Dependendias do Jersey -->
         
+         <!-- Inicio dependencias spring -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>3.2.6.RELEASE</version>
+            <type>jar</type>
+        </dependency>        
+         <dependency>
+       		<groupId>org.springframework.security</groupId>
+       		<artifactId>spring-security-config</artifactId>
+       		<version>4.2.3.RELEASE</version>
+       	</dependency>       	
+       	<dependency>
+       		<groupId>commons-logging</groupId>
+       		<artifactId>commons-logging</artifactId>
+       		<version>1.2</version>
+       	</dependency>
+        
+        <!-- Fim Dependendias do spring -->
+        
         <!-- Inicio dependencias Hibernate -->
         
         <dependency>

@@ -6,10 +6,11 @@ import com.ufrn.projeto.dao.interfaces.IEstagioMatrizDao;
 import com.ufrn.projeto.dao.interfaces.IMatrizDao;
 import com.ufrn.projeto.exceptions.CustomNoContentException;
 import com.ufrn.projeto.exceptions.OutputMessage;
-import com.ufrn.projeto.model.Estagio;
+import com.ufrn.projeto.model.LogEstagio;
 import com.ufrn.projeto.model.Matriz;
-import com.ufrn.projeto.model.enums.EnumEstagio;
+import com.ufrn.projeto.security.Secured;
 import java.util.List;
+import java.util.Random;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -20,8 +21,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import org.hibernate.criterion.Order;
 
 
@@ -29,17 +32,18 @@ import org.hibernate.criterion.Order;
 public class ServiceMatriz {
       
     @POST
+    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Matriz matriz){         
-        try{
-            IMatrizDao matrizDAO = new MatrizDaoImpl();    	
+    public Response create(Matriz matriz, @Context SecurityContext securityContext){  
+        try{      
+            IMatrizDao matrizDAO = new MatrizDaoImpl();  
+            matriz.setIdentificador(gerarIdentificador());
             matrizDAO.save(matriz);            
         }catch (Exception e){
-            System.out.println("ERRR"+ e.getMessage());
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new OutputMessage(500,e.getMessage()))
+                    .entity(new OutputMessage(500,"ERRO: " + e.toString()))
                     .header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
@@ -48,7 +52,7 @@ public class ServiceMatriz {
         //LOG ESTAGIO   
         try {
             IEstagioMatrizDao estagioMatrizDao = new EstagioMatrizDaoImpl();        
-            estagioMatrizDao.save(new Estagio(matriz, matriz.getEstagio()));
+            estagioMatrizDao.save(new LogEstagio(matriz, matriz.getEstagio()));
             //System.out.println("salvou" + estagioMatrizDao);
         } catch (Exception e) {
             System.err.println("erro: "+ e);
@@ -63,26 +67,34 @@ public class ServiceMatriz {
     }
     
     
+     private String gerarIdentificador() {
+        String randomString = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        int length = randomString.length();
+        int start = new Random().nextInt(length - 8);
+        int end = start + 8;
+        return randomString.substring(start, end).toUpperCase();
+    }
+    
     @DELETE
-    //@Secured
+    @Secured
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam("id") int id/*, @Context SecurityContext securityContext*/) throws CustomNoContentException {
+    public Response delete(@PathParam("id") int id, @Context SecurityContext securityContext) throws CustomNoContentException {
         
         IMatrizDao matrizDao = new MatrizDaoImpl(); 
-        Matriz obj = matrizDao.findById(id);
-        IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
-        Estagio estagio = estagioDao.findByEstagio(obj.getEstagio().toString(), obj.getId());
-        
-        if (obj == null || estagio == null){
+        Matriz obj = matrizDao.findById(id);        
+                    
+        if (obj == null){
             return Response
                     .status(Response.Status.NO_CONTENT)
                     .header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
         }
+        
         try{
-            estagioDao.delete(estagio);
+            obj.setAtivo(false);
+            matrizDao.save(obj);
         }catch (Exception e){
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -99,34 +111,13 @@ public class ServiceMatriz {
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 //.entity(new OutputMessage(200,"Objeto removido por "+ securityContext.getUserPrincipal().getName()))
                 .build();
-    }
-    
-    /*
-    @DELETE
-    @Secured
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam("id") int id) throws CustomNoContentException {
+    }    
         
-        IMatrizDao matrizDao = new MatrizDaoImpl(); 
-        Matriz obj = matrizDao.findById(id);
-
-        if (obj == null){
-            throw new CustomNoContentException();
-        }
-
-        matrizDao.delete(obj); 
-    
-        return Response
-                .status(Response.Status.OK)
-                .entity(new OutputMessage(200,"Objeto deletado."))
-                .build();
-    }*/
-    
     @PUT
+    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(Matriz matriz){
+    public Response update(Matriz matriz, @Context SecurityContext securityContext){
         try{
             IMatrizDao matrizDao = new MatrizDaoImpl();    	
             matrizDao.save(matriz);
@@ -142,7 +133,7 @@ public class ServiceMatriz {
         //LOG ESTAGIO  
         try {
             IEstagioMatrizDao estagioMatrizDao = new EstagioMatrizDaoImpl();        
-            estagioMatrizDao.save(new Estagio(matriz, matriz.getEstagio()));
+            estagioMatrizDao.save(new LogEstagio(matriz, matriz.getEstagio()));
             //System.out.println("salvou" + estagioMatrizDao);
         } catch (Exception e) {
             System.err.println("erro: "+ e);
@@ -156,10 +147,29 @@ public class ServiceMatriz {
                 .build();
     }
     
+//    @PUT("/{id}/logEstagio/atualizar")
+//    @Path("/{id}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response updateEstagio(@PathParam("id") int id, EnumEstagio enumEstagio){
+//        IMatrizDao matrizDao = new MatrizDaoImpl(); 
+//        Matriz obj = matrizDao.findById(id);
+//        
+//        //ATUALIZAR SOMENTE O LOG DE ESTAGIO DA MATRIZ
+//        
+//        try {
+//            
+//        } catch (Exception e) {
+//        }
+//        
+//        return null;        
+//    }
+    
     @GET
+    @Secured
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listById(@PathParam("id") int id){
+    public Response listById(@PathParam("id") int id, @Context SecurityContext securityContext){
         try{
             IMatrizDao matrizDao = new MatrizDaoImpl();    
             Matriz obj = matrizDao.findById(id);
@@ -190,6 +200,7 @@ public class ServiceMatriz {
     
     
     @GET
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response listAll(
             @QueryParam("orderby") @DefaultValue("id") String orderBy,
@@ -225,6 +236,7 @@ public class ServiceMatriz {
     }
     
     @GET
+    @Secured
     @Path("/value")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listAllQuery(

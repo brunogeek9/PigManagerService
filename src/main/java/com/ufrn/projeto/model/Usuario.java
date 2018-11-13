@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -22,32 +21,17 @@ public class Usuario implements Serializable{
 
     @Column(name = "nome", nullable = false)
     @NotEmpty(message = "Por favor, insira seu nome!")
-    private String nome;
-    
-//    @Column(name = "tipo", nullable = false)
-//    @Enumerated(EnumType.STRING)
-//    @NotNull(message = "Por favor, informe o tipo de usuário!")
-//    private TipoUsuario tipo;
-
-    @Column(name = "email", nullable = false)
-    @NotNull(message = "Por favor, informe o email do usuário!")
-    private String email;
-    
-     @Column(name = "senha", nullable = false)
-    @NotNull(message = "Por favor, informe a senha do usuário!")
-    private String senha;
-
+    private String nome;   
+   
     @Column(nullable = false)
-    private boolean ativo = true;
-
+    private boolean ativo = true;  
+    
     public Usuario() {
     }
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome) {
         this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }   
+    }    
 
     public Integer getId() {
         return id;
@@ -63,30 +47,6 @@ public class Usuario implements Serializable{
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
     }
 
     @Override

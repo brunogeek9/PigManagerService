@@ -5,7 +5,8 @@
  */
 package com.ufrn.projeto.util;
 
-import com.ufrn.projeto.model.Estagio;
+import com.ufrn.projeto.model.LogEstagio;
+import com.ufrn.projeto.model.Login;
 import com.ufrn.projeto.model.Matriz;
 import com.ufrn.projeto.model.Usuario;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -23,8 +24,9 @@ public class HibernateUtil {
             cfg.configure("hibernate.cfg.xml");
     
             cfg.addAnnotatedClass(Matriz.class);
-            cfg.addAnnotatedClass(Usuario.class);            
-            cfg.addAnnotatedClass(Estagio.class);
+            cfg.addAnnotatedClass(Usuario.class);     
+            cfg.addAnnotatedClass(Login.class);   
+            cfg.addAnnotatedClass(LogEstagio.class);
 
             StandardServiceRegistryBuilder registradorServico = new StandardServiceRegistryBuilder();
             registradorServico.applySettings(cfg.getProperties());

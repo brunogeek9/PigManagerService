@@ -25,9 +25,8 @@ public class Matriz implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false) 
-    @NotNull(message = "Por favor, informe o identificador da matriz!")
-    private double identificador;
+    @Column(unique = true) 
+    private String identificador;
     
     @Column(name = "raca", nullable = false)
     @NotEmpty(message = "Por favor, insira a raça da matriz!")
@@ -46,18 +45,18 @@ public class Matriz implements Serializable{
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Brazil/East")
     private Date dataNascimento;
     
-    @Column(name = "arquivo", nullable = true) // false indica que não pode ser nulo
+    //AQUI É A FOTO == HISTÓRICO
+    @Column(name = "arquivo", nullable = true)
     @NotEmpty(message = "Por favor, insira uma imagem!")
     private String arquivo;
-    //private Historico arquivo;
-   
+    
     @Column(nullable = false)
     private boolean ativo = true;
-
+   
     public Matriz() {
     }
 
-    public Matriz(double identificador, String raca, double peso, EnumEstagio estagio, Date dataNascimento, String arquivo) {
+    public Matriz(String identificador, String raca, double peso, EnumEstagio estagio, Date dataNascimento, String arquivo) {
         this.identificador = identificador;
         this.raca = raca;
         this.peso = peso;
@@ -74,11 +73,11 @@ public class Matriz implements Serializable{
         this.id = id;
     }
 
-    public double getIdentificador() {
+    public String getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(double identificador) {
+    public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
 
@@ -114,6 +113,14 @@ public class Matriz implements Serializable{
         this.arquivo = arquivo;
     }
 
+    public EnumEstagio getEstagio() {
+        return estagio;
+    }
+
+    public void setEstagio(EnumEstagio estagio) {
+        this.estagio = estagio;
+    }     
+    
     public boolean isAtivo() {
         return ativo;
     }
@@ -121,19 +128,11 @@ public class Matriz implements Serializable{
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-
-    public EnumEstagio getEstagio() {
-        return estagio;
-    }
-
-    public void setEstagio(EnumEstagio estagio) {
-        this.estagio = estagio;
-    } 
- 
+    
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.id);
+        int hash = 7;
+        hash = 11 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -154,7 +153,4 @@ public class Matriz implements Serializable{
         }
         return true;
     }
-    
-    
-    
 }
