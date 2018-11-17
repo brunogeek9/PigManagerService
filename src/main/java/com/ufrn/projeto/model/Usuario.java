@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -22,6 +24,10 @@ public class Usuario implements Serializable{
     @Column(name = "nome", nullable = false)
     @NotEmpty(message = "Por favor, insira seu nome!")
     private String nome;   
+    
+    @Column(name = "nome_usuario", nullable = false)
+    @NotNull(message = "O nome de usuário não pode ser nulo")
+    private String nomeUsuario;
    
     @Column(nullable = false)
     private boolean ativo = true;  
@@ -49,7 +55,15 @@ public class Usuario implements Serializable{
         this.nome = nome;
     }
 
-    @Override
+    public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 5;
         hash = 89 * hash + Objects.hashCode(this.id);
