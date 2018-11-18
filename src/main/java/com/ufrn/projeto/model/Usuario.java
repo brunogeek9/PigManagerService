@@ -35,8 +35,9 @@ public class Usuario implements Serializable{
     public Usuario() {
     }
 
-    public Usuario(String nome) {
+    public Usuario(String nome, String nomeUsuario) {
         this.nome = nome;
+        this.nomeUsuario = nomeUsuario;
     }    
 
     public Integer getId() {
