@@ -1,7 +1,10 @@
 package com.ufrn.projeto.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ufrn.projeto.model.enums.EnumEstagio;
 import java.io.Serializable;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +27,10 @@ public class LogEstagio implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "data_cadastro", nullable = false)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Brazil/East")
+    private Date dataCadastro;
+    
     @ManyToOne
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Matriz matriz;
@@ -37,11 +44,14 @@ public class LogEstagio implements Serializable{
 //    private boolean ativo = true;
 
     public LogEstagio() {
+        java.sql.Date now = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        this.dataCadastro = now;
     }
 
     public LogEstagio(Matriz matriz, EnumEstagio estagio) {
         this.matriz = matriz;
         this.estagio = estagio;
+        this.dataCadastro = new java.sql.Date(Calendar.getInstance().getTime().getTime());
     }
 
     public Integer getId() {
@@ -68,10 +78,21 @@ public class LogEstagio implements Serializable{
         this.estagio = estagio;
     }
 
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.id);
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.id);
+        hash = 71 * hash + Objects.hashCode(this.dataCadastro);
+        hash = 71 * hash + Objects.hashCode(this.matriz);
+        hash = 71 * hash + Objects.hashCode(this.estagio);
         return hash;
     }
 
@@ -90,6 +111,17 @@ public class LogEstagio implements Serializable{
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
+        if (!Objects.equals(this.dataCadastro, other.dataCadastro)) {
+            return false;
+        }
+        if (!Objects.equals(this.matriz, other.matriz)) {
+            return false;
+        }
+        if (this.estagio != other.estagio) {
+            return false;
+        }
         return true;
-    }    
+    }
+    
+      
 }
