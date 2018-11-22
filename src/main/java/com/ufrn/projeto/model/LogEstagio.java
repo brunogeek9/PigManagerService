@@ -88,11 +88,8 @@ public class LogEstagio implements Serializable{
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 71 * hash + Objects.hashCode(this.id);
-        hash = 71 * hash + Objects.hashCode(this.dataCadastro);
-        hash = 71 * hash + Objects.hashCode(this.matriz);
-        hash = 71 * hash + Objects.hashCode(this.estagio);
+        int hash = 5;
+        hash = 43 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -111,17 +108,6 @@ public class LogEstagio implements Serializable{
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.dataCadastro, other.dataCadastro)) {
-            return false;
-        }
-        if (!Objects.equals(this.matriz, other.matriz)) {
-            return false;
-        }
-        if (this.estagio != other.estagio) {
-            return false;
-        }
         return true;
-    }
-    
-      
+    }  
 }
