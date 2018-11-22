@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -36,7 +38,8 @@ public class Usuario implements Serializable{
     public Usuario(String nome, String nomeUsuario) {
         this.nome = nome;
         this.nomeUsuario = nomeUsuario;
-    }
+
+    }    
 
     public Integer getId() {
         return id;
@@ -60,8 +63,8 @@ public class Usuario implements Serializable{
     
     public void setNomeUsuario(String nomeUsuario) {
             this.nomeUsuario = nomeUsuario;
-    }
-    
+    }  
+   
     @Override
     public int hashCode() {
         int hash = 5;
