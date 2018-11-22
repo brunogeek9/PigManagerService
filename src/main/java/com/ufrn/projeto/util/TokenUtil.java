@@ -3,7 +3,6 @@ package com.ufrn.projeto.util;
 import com.ufrn.projeto.dao.implementations.LoginDaoImpl;
 import com.ufrn.projeto.dao.interfaces.ILoginDao;
 import com.ufrn.projeto.model.Login;
-import io.jsonwebtoken.Claims;
 import java.security.Key;
 import java.util.Calendar;
 
@@ -69,14 +68,14 @@ public class TokenUtil {
 //        credenciaisDao.save(credenciaisWithNewToken);
 //
 //    }
-    
-    public static Claims campos(String token){
-        //Obtenção dos Claims do token
-        Claims claims = Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary("35tdsxz"))
-                .parseClaimsJws(token).getBody();
-        
-        return claims;
-    }
+//    
+//    public static Claims campos(String token){
+//        //Obtenção dos Claims do token
+//        Claims claims = Jwts.parser()
+//                .setSigningKey(DatatypeConverter.parseBase64Binary("35tdsxz"))
+//                .parseClaimsJws(token).getBody();
+//        
+//        return claims;
+//    }
     
 }

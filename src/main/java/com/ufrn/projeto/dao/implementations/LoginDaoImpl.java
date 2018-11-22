@@ -59,16 +59,16 @@ public class LoginDaoImpl extends GenericDaoImpl<Login, Integer> implements ILog
         }
     }
     
-     public Login verificarUsuario(String token, int usuario) {
+     public Login verificarUsuario(String token) {
         Session sessao = null;
         Login resultado = null;
 
         try {
             sessao = HibernateUtil.getSessionFactory().openSession();
             resultado = (Login) sessao.createCriteria(Login.class)
-                    .add(Restrictions.idEq(usuario))
+                    //.add(Restrictions.idEq(usuario))
                     .add(Restrictions.eq("token", token))
-                    .add(Restrictions.eq("ativo", true))
+                    //.add(Restrictions.eq("ativo", true))
                     .uniqueResult();
 
         } catch (HibernateException e) {

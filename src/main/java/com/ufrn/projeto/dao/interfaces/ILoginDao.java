@@ -8,5 +8,5 @@ public interface ILoginDao extends IGenericDao<Login, Integer>{
 	
     public Login findByTokenUser(String token);   
     
-    public Login verificarUsuario(String token, int usuario);
+    public Login verificarUsuario(String token);
 }
