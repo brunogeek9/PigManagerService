@@ -2,15 +2,22 @@ package com.ufrn.projeto.dao.implementations;
 
 import com.ufrn.projeto.dao.interfaces.IEstagioMatrizDao;
 import com.ufrn.projeto.model.LogEstagio;
+import com.ufrn.projeto.model.Matriz;
 import com.ufrn.projeto.model.enums.EnumEstagio;
 import com.ufrn.projeto.util.HibernateUtil;
+import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 public class EstagioMatrizDaoImpl extends GenericDaoImpl<LogEstagio, Integer> implements IEstagioMatrizDao {
 	
-        Session sessao = null;
+        private Session session = null;
+
         
         public EstagioMatrizDaoImpl() { 
                super(LogEstagio.class); 
@@ -33,6 +40,24 @@ public class EstagioMatrizDaoImpl extends GenericDaoImpl<LogEstagio, Integer> im
                 System.out.println("ERRO ENCONTRANDO ESTAGIO");
             }
             return  null;
+        }
+        
+        @Override
+        public String getCurrentStage(int id){
+            Transaction t = null;
+        try{
+            session = HibernateUtil.getSessionFactory().openSession();
+            Criteria criteria = session.createCriteria(LogEstagio.class)
+                    .add(Restrictions.eq("matriz", id)); 
+             
+            return criteria.uniqueResult().toString(); 
+        }catch (HibernateException e){
+            System.out.println("Erro listando: " + e);
+        }finally{
+            session.close();
+        }
+        return null;
+            
         }
 
 //    @Override

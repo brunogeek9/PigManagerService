@@ -2,8 +2,10 @@ package com.ufrn.projeto.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ufrn.projeto.model.enums.EnumEstagio;
+import com.ufrn.projeto.util.ToolBox;
 import java.io.Serializable;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -15,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 
@@ -27,9 +31,9 @@ public class LogEstagio implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "data_cadastro", nullable = false)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Brazil/East")
+    @Column(name = "data_cadastro", nullable = true)
     private Date dataCadastro;
+    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Brazil/East")
     
     @ManyToOne
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
@@ -44,14 +48,15 @@ public class LogEstagio implements Serializable{
 //    private boolean ativo = true;
 
     public LogEstagio() {
-        java.sql.Date now = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        this.dataCadastro = now;
+        //java.sql.Date now = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        //java.sql.T
+        this.dataCadastro = ToolBox.currentDate();
     }
 
     public LogEstagio(Matriz matriz, EnumEstagio estagio) {
         this.matriz = matriz;
         this.estagio = estagio;
-        this.dataCadastro = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        this.dataCadastro = ToolBox.currentDate();
     }
 
     public Integer getId() {
@@ -79,11 +84,13 @@ public class LogEstagio implements Serializable{
     }
 
     public Date getDataCadastro() {
-        return dataCadastro;
+        Date now = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        return (this.dataCadastro == null) ? now : this.dataCadastro;
+        // return (this.stringValue == null) ? "Default" : stringValue;
     }
 
     public void setDataCadastro(Date dataCadastro) {
-        this.dataCadastro = dataCadastro;
+        this.dataCadastro = new java.sql.Date(Calendar.getInstance().getTime().getTime());
     }
 
     @Override

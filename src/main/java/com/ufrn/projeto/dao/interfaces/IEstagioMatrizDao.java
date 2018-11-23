@@ -5,7 +5,7 @@ import com.ufrn.projeto.model.LogEstagio;
 
 public interface IEstagioMatrizDao extends IGenericDao<LogEstagio, Integer>{
     public LogEstagio findByEstagio(String estagio, int id);
-    
+    public String getCurrentStage(int id);
     //public LogEstagio buscarMatriz(Matriz matriz);
     
 }

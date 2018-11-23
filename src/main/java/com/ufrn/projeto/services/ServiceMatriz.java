@@ -199,6 +199,45 @@ public class ServiceMatriz {
     }
     
     
+    
+    @GET
+    @Secured
+    @Path("/LogEstagio/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCurrentStage(@PathParam("id") int id, @Context SecurityContext securityContext){
+        try{
+            //IMatrizDao matrizDao = new MatrizDaoImpl();    
+            //Matriz obj = matrizDao.getC(id);
+            IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
+            String estagio = estagioDao.getCurrentStage(id);
+            if (estagio == null){
+                return Response
+                        .status(Response.Status.NO_CONTENT)
+                        .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                        .build();
+                
+            }else{
+                return Response
+                    .status(Response.Status.OK)
+                    .entity(estagio)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .build();
+            }
+        }catch (Exception e){
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(new OutputMessage(500,e.getMessage()))
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .build();
+        }
+    }
+    
+    
+    
+    
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)

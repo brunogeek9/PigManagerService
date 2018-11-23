@@ -40,6 +40,7 @@ public class Matriz implements Serializable{
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Por favor, informe o tipo de estagio da matriz!")
     private EnumEstagio estagio;
+    //private LogEstagio estagio;
     
     @Column(name = "data_nascimento", nullable = false)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Brazil/East")
