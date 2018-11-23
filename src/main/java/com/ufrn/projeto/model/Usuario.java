@@ -26,7 +26,7 @@ public class Usuario implements Serializable{
     private String nome;   
     
     @Column(name = "nome_usuario", nullable = false)
-    @NotNull(message = "O nome de usuário não pode ser nulo")
+    @NotEmpty(message = "O nome de usuário não pode ser nulo")
     private String nomeUsuario;
    
     @Column(nullable = false)
@@ -38,6 +38,7 @@ public class Usuario implements Serializable{
     public Usuario(String nome, String nomeUsuario) {
         this.nome = nome;
         this.nomeUsuario = nomeUsuario;
+
     }    
 
     public Integer getId() {
@@ -57,14 +58,14 @@ public class Usuario implements Serializable{
     }
 
     public String getNomeUsuario() {
-		return nomeUsuario;
-	}
-
-	public void setNomeUsuario(String nomeUsuario) {
-		this.nomeUsuario = nomeUsuario;
-	}
-
-	@Override
+            return nomeUsuario;
+    }
+    
+    public void setNomeUsuario(String nomeUsuario) {
+            this.nomeUsuario = nomeUsuario;
+    }  
+   
+    @Override
     public int hashCode() {
         int hash = 5;
         hash = 89 * hash + Objects.hashCode(this.id);

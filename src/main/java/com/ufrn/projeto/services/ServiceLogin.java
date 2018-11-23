@@ -26,14 +26,15 @@ public class ServiceLogin {
             userLogged.setToken(token);
             credenciaisDao.save(userLogged);
 
-            return Response.status(Response.Status.OK).entity(new OutputMessage(200, token)).build();
+            return Response.status(Response.Status.OK)
+                    .entity(new OutputMessage(200, "Bearer "+token))
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(new OutputMessage(Response.Status.UNAUTHORIZED.getStatusCode(),
                                     "Permission denied " + e.getMessage()))
                     .build();
         }
-
     }
 
     public Login validUser(String email, String senha) throws Exception {

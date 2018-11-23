@@ -17,7 +17,7 @@ public class ServiceLogout {
     
     @Context HttpServletRequest httpServletRequest =null;
     @GET
-    public Response logar(){
+    public Response logout(){
         Login logUsuario = null;
         ILoginDao loginDAO = new LoginDaoImpl();
         //Adquirindo token a partir do cabeçalho da requisição
@@ -29,23 +29,20 @@ public class ServiceLogout {
          * Caso não haja erro na execução, o token do usuário é destruído.
          */
         try{
-            Claims campos = TokenUtil.campos(token);
-            System.out.println("campos " + campos);
-            
-            logUsuario = loginDAO.verificarUsuario(token, (int) campos.get("usuario"));            
-            System.out.println("logUsuario " + logUsuario);
+            //Claims campos = TokenUtil.campos(token);
+            logUsuario = loginDAO.verificarUsuario(token);            
             
             logUsuario.setToken("");
             loginDAO.save(logUsuario);
+            
+            return Response.status(Response.Status.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .build();//200
         }catch(Exception e){
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new OutputMessage(500,"ERRO: " + e.toString()))
                     .header("Access-Control-Allow-Origin", "*")
                     .build();
-        }
-        
-        return Response.status(Response.Status.OK)
-                .header("Access-Control-Allow-Origin", "*")
-                .build();//200
+        }      
     }
 }

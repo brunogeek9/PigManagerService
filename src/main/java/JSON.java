@@ -3,11 +3,12 @@ public class JSON {
     //EXEMPLOS DE JSON
    
     //CADASTRO DE USUARIO
-    //   {
+    //{
     //	"email":"fbio@gmail.com",
     //	"senha": "123",
     //	"usuario": {
-    //		"nome":"Fábio"
+    //		"nome":"Fábio",
+    //        "nomeUsuario": "fbio1"
     //	}
     //	
     //}
