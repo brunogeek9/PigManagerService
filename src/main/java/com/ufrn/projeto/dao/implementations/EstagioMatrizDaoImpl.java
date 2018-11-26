@@ -45,19 +45,23 @@ public class EstagioMatrizDaoImpl extends GenericDaoImpl<LogEstagio, Integer> im
         
         @Override
         public String getCurrentStage(int id){
-            Transaction t = null;
-        try{
+            try{
             session = HibernateUtil.getSessionFactory().openSession();
-            Criteria criteria = session.createCriteria(LogEstagio.class)
-                    .add(Restrictions.eq("matriz", id)); 
-             
-            return criteria.uniqueResult().toString(); 
-        }catch (HibernateException e){
-            System.out.println("Erro listando: " + e);
-        }finally{
-            session.close();
-        }
-        return null;
+            Transaction t = session.beginTransaction();
+            String hql = "Select e.estagio from LogEstagio e where e.data_cadastro = "
+                    + "(SELECT MAX(e2.data_cadastro) FROM LogEstagio e2 WHERE e2.matriz_idMatriz = :idMatriz)";
+            Query query = session.createQuery(hql);
+            query.setParameter("idMatriz", id);
+            String result = query.uniqueResult().toString();
+            System.out.println(result);
+            t.commit();
+            return "";
+            }catch (HibernateException e){
+                System.out.println("Erro listando: " + e);
+            }finally{
+                session.close();
+            }
+            return null;
             
         }
         

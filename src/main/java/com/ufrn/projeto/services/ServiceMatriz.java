@@ -79,14 +79,13 @@ public class ServiceMatriz {
         }catch (Exception ex){
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new OutputMessage(500,"ERRO: " + e.toString()))
+                    .entity(new OutputMessage(500,"ERRO: " + ex.toString()))
                     .header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
         }
         return Response
                 .status(Response.Status.CREATED)
-                .entity("salvou")
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();

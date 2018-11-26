@@ -20,17 +20,21 @@ import org.hibernate.Session;
  */
 public class TesteHibernate {
     public static void main(String args[]){
+        /*
         Session sessao = null;
-        //IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
-        //IMatrizDao mDao = new MatrizDaoImpl();
-        
-        //Matriz m = mDao.findById(2);
-        
-        //LogEstagio log = new LogEstagio(m,EnumEstagio.VAZIA);
-        //System.out.println(m.toString()+" "+log.toString());
-        //estagioDao.save(log);
         IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
-        estagioDao.saveLog(1, EnumEstagio.VAZIA);
+        IMatrizDao mDao = new MatrizDaoImpl();
+        
+        Matriz m = mDao.findById(2);
+        
+        LogEstagio log = new LogEstagio(m,EnumEstagio.VAZIA);
+        System.out.println(m.toString()+" "+log.toString());
+        estagioDao.save(log);
+        */
+        IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
+        //estagioDao.saveLog(3, EnumEstagio.VAZIA);
+        String teste = estagioDao.getCurrentStage(2);
+                
                 
     }
     
