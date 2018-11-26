@@ -8,6 +8,7 @@ import com.ufrn.projeto.exceptions.CustomNoContentException;
 import com.ufrn.projeto.exceptions.OutputMessage;
 import com.ufrn.projeto.model.LogEstagio;
 import com.ufrn.projeto.model.Matriz;
+import com.ufrn.projeto.model.enums.EnumEstagio;
 import com.ufrn.projeto.security.Secured;
 import java.util.List;
 import java.util.Random;
@@ -65,6 +66,33 @@ public class ServiceMatriz {
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
     }
+    
+    @POST
+    @Path("/novoEstagio/{id}")
+    @Secured
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createLog(@PathParam("id") int id, EnumEstagio e, @Context SecurityContext securityContext){  
+        try{      
+            IEstagioMatrizDao logDAO = new EstagioMatrizDaoImpl();  
+            logDAO.saveLog(id, e);            
+        }catch (Exception ex){
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new OutputMessage(500,"ERRO: " + e.toString()))
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .build();
+        }
+        return Response
+                .status(Response.Status.CREATED)
+                .entity("salvou")
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .build();
+        
+    }
+    
     
     
      private String gerarIdentificador() {
@@ -202,14 +230,15 @@ public class ServiceMatriz {
     
     @GET
     @Secured
-    @Path("/LogEstagio/{id}")
+    @Path("/logEstagio/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCurrentStage(@PathParam("id") int id, @Context SecurityContext securityContext){
         try{
             //IMatrizDao matrizDao = new MatrizDaoImpl();    
             //Matriz obj = matrizDao.getC(id);
-            IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
-            String estagio = estagioDao.getCurrentStage(id);
+            //IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
+            //String estagio = estagioDao.getCurrentStage(id);
+            String estagio = "COBERTA";
             if (estagio == null){
                 return Response
                         .status(Response.Status.NO_CONTENT)
@@ -220,7 +249,6 @@ public class ServiceMatriz {
             }else{
                 return Response
                     .status(Response.Status.OK)
-                    .entity(estagio)
                     .header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();

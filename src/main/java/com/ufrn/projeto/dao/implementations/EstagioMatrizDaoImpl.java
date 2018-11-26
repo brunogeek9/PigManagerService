@@ -1,6 +1,7 @@
 package com.ufrn.projeto.dao.implementations;
 
 import com.ufrn.projeto.dao.interfaces.IEstagioMatrizDao;
+import com.ufrn.projeto.dao.interfaces.IMatrizDao;
 import com.ufrn.projeto.model.LogEstagio;
 import com.ufrn.projeto.model.Matriz;
 import com.ufrn.projeto.model.enums.EnumEstagio;
@@ -17,7 +18,7 @@ import org.hibernate.query.Query;
 public class EstagioMatrizDaoImpl extends GenericDaoImpl<LogEstagio, Integer> implements IEstagioMatrizDao {
 	
         private Session session = null;
-
+           
         
         public EstagioMatrizDaoImpl() { 
                super(LogEstagio.class); 
@@ -59,6 +60,8 @@ public class EstagioMatrizDaoImpl extends GenericDaoImpl<LogEstagio, Integer> im
         return null;
             
         }
+        
+        
 
 //    @Override
 //    public LogEstagio buscarMatriz(Matriz matriz) {
@@ -86,5 +89,16 @@ public class EstagioMatrizDaoImpl extends GenericDaoImpl<LogEstagio, Integer> im
 //        sessao.close();
 //        return resultado;
 //    }
+      
+      @Override
+      public void saveLog(int id, EnumEstagio e){
+          IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
+          IMatrizDao mDao = new MatrizDaoImpl();
+          
+          Matriz m = mDao.findById(id);
+          LogEstagio log = new LogEstagio(m,e);
+          estagioDao.save(log);
+          
+      }
 	 
 }
