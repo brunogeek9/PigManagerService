@@ -7,7 +7,7 @@ import com.ufrn.projeto.model.enums.EnumEstagio;
 public interface IEstagioMatrizDao extends IGenericDao<LogEstagio, Integer>{
     public LogEstagio findByEstagio(String estagio, int id);
     public String getCurrentStage(int id);
-    public void saveLog(int id, EnumEstagio e);
+    public void saveLog(int id, String e);
     //public LogEstagio buscarMatriz(Matriz matriz);
     
 }

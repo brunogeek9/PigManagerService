@@ -69,13 +69,13 @@ public class ServiceMatriz {
     
     @POST
     @Path("/novoEstagio/{id}")
-    @Secured
+    //@Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLog(@PathParam("id") int id, EnumEstagio e, @Context SecurityContext securityContext){  
+    public Response createLog(@PathParam("id") int id, String estagio, @Context SecurityContext securityContext){  
         try{      
             IEstagioMatrizDao logDAO = new EstagioMatrizDaoImpl();  
-            logDAO.saveLog(id, e);            
+            logDAO.saveLog(id, estagio);            
         }catch (Exception ex){
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -86,6 +86,7 @@ public class ServiceMatriz {
         }
         return Response
                 .status(Response.Status.CREATED)
+                .entity(new OutputMessage(200,"OK"))
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
