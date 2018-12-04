@@ -19,7 +19,6 @@
     <mapping class="com.ufrn.projeto.model.Matriz"/>
     <mapping class="com.ufrn.projeto.model.Usuario"/>
     <mapping class="com.ufrn.projeto.model.Login"/>
-    <mapping class="com.ufrn.projeto.model.Estagio"/>
     <mapping class="com.ufrn.projeto.model.LogEstagio"/>
     
   </session-factory>

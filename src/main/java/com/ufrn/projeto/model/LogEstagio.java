@@ -2,7 +2,7 @@ package com.ufrn.projeto.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ufrn.projeto.model.enums.EnumEstagio;
-import com.ufrn.projeto.util.ToolBox;
+import com.ufrn.projeto.util.DataUtil;
 import java.io.Serializable;
 //import java.sql.Date;
 import java.util.Date;
@@ -17,8 +17,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 
@@ -32,31 +30,27 @@ public class LogEstagio implements Serializable{
     private Integer id;
 
     @Column(name = "data_cadastro", nullable = true)
-    private Date dataCadastro;
     //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Brazil/East")
+    private Date dataCadastro;
     
     @ManyToOne
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Matriz matriz;
     
-    @Column(name = "estagio", nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Por favor, informe o tipo de estagio da matriz!")
     private EnumEstagio estagio;
-    
-//    @Column(nullable = false)
-//    private boolean ativo = true;
 
     public LogEstagio() {
         //java.sql.Date now = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         //java.sql.T
-        this.dataCadastro = ToolBox.currentDate();
+        this.dataCadastro = DataUtil.currentDate();
     }
 
     public LogEstagio(Matriz matriz, EnumEstagio estagio) {
         this.matriz = matriz;
         this.estagio = estagio;
-        this.dataCadastro = ToolBox.currentDate();
+        this.dataCadastro = DataUtil.currentDate();
     }
 
     public Integer getId() {

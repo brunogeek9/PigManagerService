@@ -39,8 +39,7 @@ public class Matriz implements Serializable{
     @Column(name = "estagio", nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Por favor, informe o tipo de estagio da matriz!")
-    private EnumEstagio estagio;
-    //private LogEstagio estagio;
+    private EnumEstagio enumEstagio;
     
     @Column(name = "data_nascimento", nullable = false)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Brazil/East")
@@ -57,11 +56,11 @@ public class Matriz implements Serializable{
     public Matriz() {
     }
 
-    public Matriz(String identificador, String raca, double peso, EnumEstagio estagio, Date dataNascimento, String arquivo) {
+    public Matriz(String identificador, String raca, double peso, EnumEstagio enumEstagio, Date dataNascimento, String arquivo) {
         this.identificador = identificador;
         this.raca = raca;
         this.peso = peso;
-        this.estagio = estagio;
+        this.enumEstagio = enumEstagio;
         this.dataNascimento = dataNascimento;
         this.arquivo = arquivo;
     }   
@@ -114,13 +113,13 @@ public class Matriz implements Serializable{
         this.arquivo = arquivo;
     }
 
-    public EnumEstagio getEstagio() {
-        return estagio;
+    public EnumEstagio getEnumEstagio() {
+        return enumEstagio;
     }
 
-    public void setEstagio(EnumEstagio estagio) {
-        this.estagio = estagio;
-    }     
+    public void setEnumEstagio(EnumEstagio enumEstagio) {
+        this.enumEstagio = enumEstagio;
+    }
     
     public boolean isAtivo() {
         return ativo;

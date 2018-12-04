@@ -1,14 +1,12 @@
 package com.ufrn.projeto.services;
 
-import com.ufrn.projeto.dao.implementations.EstagioMatrizDaoImpl;
+import com.ufrn.projeto.dao.implementations.LogEstagioDaoImpl;
 import com.ufrn.projeto.dao.implementations.MatrizDaoImpl;
-import com.ufrn.projeto.dao.interfaces.IEstagioMatrizDao;
 import com.ufrn.projeto.dao.interfaces.IMatrizDao;
 import com.ufrn.projeto.exceptions.CustomNoContentException;
 import com.ufrn.projeto.exceptions.OutputMessage;
 import com.ufrn.projeto.model.LogEstagio;
 import com.ufrn.projeto.model.Matriz;
-import com.ufrn.projeto.model.enums.EnumEstagio;
 import com.ufrn.projeto.security.Secured;
 import java.util.List;
 import java.util.Random;
@@ -27,7 +25,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import org.hibernate.criterion.Order;
-
+import com.ufrn.projeto.dao.interfaces.ILogEstagioDao;
+import com.ufrn.projeto.model.enums.EnumEstagio;
 
 @Path("/matriz")
 public class ServiceMatriz {
@@ -52,9 +51,8 @@ public class ServiceMatriz {
         
         //LOG ESTAGIO   
         try {
-            IEstagioMatrizDao estagioMatrizDao = new EstagioMatrizDaoImpl();        
-            estagioMatrizDao.save(new LogEstagio(matriz, matriz.getEstagio()));
-            //System.out.println("salvou" + estagioMatrizDao);
+            ILogEstagioDao estagioMatrizDao = new LogEstagioDaoImpl();        
+            estagioMatrizDao.save(new LogEstagio(matriz, matriz.getEnumEstagio()));
         } catch (Exception e) {
             System.err.println("erro: "+ e);
         }
@@ -67,15 +65,31 @@ public class ServiceMatriz {
                 .build();
     }
     
+    //Método que atualiza a matriz no log da matriz
     @POST
-    @Path("/novoEstagio/{id}")
-    //@Secured
+    @Path("/novoEstagio/{id}/{estagio}")
+    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createLog(@PathParam("id") int id, String estagio, @Context SecurityContext securityContext){  
-        try{      
-            IEstagioMatrizDao logDAO = new EstagioMatrizDaoImpl();  
-            logDAO.saveLog(id, estagio);            
+    public Response newLog(@PathParam("id") int idmatriz, @PathParam("estagio") String estagio, @Context SecurityContext securityContext){  
+        try{            
+            IMatrizDao matrizDao = new MatrizDaoImpl(); 
+            Matriz matriz = matrizDao.findById(idmatriz);  
+                        
+            EnumEstagio enumEstagio = null;
+            if(estagio.equals("VAZIA")){
+                enumEstagio = EnumEstagio.VAZIA;
+            }else if(estagio.equals("LACTACAO")){
+                enumEstagio = EnumEstagio.LACTACAO;
+            }else if(estagio.equals("PRENHES")){
+                enumEstagio = EnumEstagio.PRENHES;
+            }else if(estagio.equals("COBERTA")) {
+                enumEstagio = EnumEstagio.COBERTA;
+            }            
+                                   
+            ILogEstagioDao log = new LogEstagioDaoImpl();
+            LogEstagio logEstagio = new LogEstagio(matriz, enumEstagio);
+            log.save(logEstagio);   
         }catch (Exception ex){
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -92,10 +106,8 @@ public class ServiceMatriz {
                 .build();
         
     }
-    
-    
-    
-     private String gerarIdentificador() {
+        
+    private String gerarIdentificador() {
         String randomString = Long.toHexString(Double.doubleToLongBits(Math.random()));
         int length = randomString.length();
         int start = new Random().nextInt(length - 8);
@@ -108,7 +120,6 @@ public class ServiceMatriz {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id, @Context SecurityContext securityContext) throws CustomNoContentException {
-        
         IMatrizDao matrizDao = new MatrizDaoImpl(); 
         Matriz obj = matrizDao.findById(id);        
                     
@@ -160,8 +171,8 @@ public class ServiceMatriz {
         
         //LOG ESTAGIO  
         try {
-            IEstagioMatrizDao estagioMatrizDao = new EstagioMatrizDaoImpl();        
-            estagioMatrizDao.save(new LogEstagio(matriz, matriz.getEstagio()));
+            ILogEstagioDao estagioMatrizDao = new LogEstagioDaoImpl();        
+            estagioMatrizDao.save(new LogEstagio(matriz, matriz.getEnumEstagio()));
             //System.out.println("salvou" + estagioMatrizDao);
         } catch (Exception e) {
             System.err.println("erro: "+ e);
@@ -174,24 +185,6 @@ public class ServiceMatriz {
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
     }
-    
-//    @PUT("/{id}/logEstagio/atualizar")
-//    @Path("/{id}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response updateEstagio(@PathParam("id") int id, EnumEstagio enumEstagio){
-//        IMatrizDao matrizDao = new MatrizDaoImpl(); 
-//        Matriz obj = matrizDao.findById(id);
-//        
-//        //ATUALIZAR SOMENTE O LOG DE ESTAGIO DA MATRIZ
-//        
-//        try {
-//            
-//        } catch (Exception e) {
-//        }
-//        
-//        return null;        
-//    }
     
     @GET
     @Secured
@@ -225,19 +218,19 @@ public class ServiceMatriz {
                 .build();
         }
     }
-    
-    
-    
+
+    //Busca pelo estagio mais recente da matriz
     @GET
-    @Secured
+    //@Secured
     @Path("/logEstagio/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCurrentStage(@PathParam("id") int id, @Context SecurityContext securityContext){
         try{
-            //IMatrizDao matrizDao = new MatrizDaoImpl();    
-            //Matriz obj = matrizDao.getC(id);
-            //IEstagioMatrizDao estagioDao = new EstagioMatrizDaoImpl();
-            //String estagio = estagioDao.getCurrentStage(id);
+            
+//            ILogEstagioDao estagioDao = new LogEstagioDaoImpl();
+//            String estagio = estagioDao.findByEstagio(id);
+//            System.out.print(estagio);
+            
             String estagio = "COBERTA";
             if (estagio == null){
                 return Response
@@ -249,6 +242,7 @@ public class ServiceMatriz {
             }else{
                 return Response
                     .status(Response.Status.OK)
+                    .entity(new OutputMessage(200, "O estagio mais recente é: " + estagio))
                     .header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                     .build();
@@ -262,9 +256,6 @@ public class ServiceMatriz {
                 .build();
         }
     }
-    
-    
-    
     
     @GET
     @Secured
